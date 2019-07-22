@@ -37,7 +37,9 @@
       "plugin:vue/essential",
       "@vue/airbnb"
     ],
-    "rules": {},
+    "rules": {
+      "max-len": [2,150]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

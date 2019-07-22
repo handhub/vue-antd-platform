@@ -1,8 +1,8 @@
 <template>
-  <a-dropdown :trigger="['click']">
-    <template slot="overlay">
-      <a-spin :spinning="loadding">
-        <a-tabs :tabBarStyle="{textAlign: 'center'}"
+  <a-dropdown :trigger="['click']" v-model="visible">
+    <div slot="overlay">
+      <!-- <a-spin :spinning="loadding"> -->
+        <a-tabs :tabBarStyle="{textAlign: 'center'}" :animated="{inkBar:true, tabPane:false}"
         :style="{backgroundColor: 'white', width: '297px'}">
           <a-tab-pane tab="通知" key="1" :style="{padding: '0 24px'}">
             <a-list>
@@ -30,8 +30,8 @@
             暂无待办
           </a-tab-pane>
         </a-tabs>
-      </a-spin>
-    </template>
+      <!-- </a-spin> -->
+    </div>
     <span @click="fetchNotice" class="header-notice">
       <a-badge count="12">
         <a-icon class="header-notice-icon" type="bell" />
@@ -45,7 +45,8 @@ export default {
   name: 'HeaderNotice',
   data() {
     return {
-      loadding: true,
+      visible: false,
+      animated: false,
     };
   },
   computed: {

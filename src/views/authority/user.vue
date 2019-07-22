@@ -1,8 +1,7 @@
 <template>
-  <div>
-    Dashboard
-  </div>
+<div>
+  User
+</div>
 </template>
-
 <script>
 </script>

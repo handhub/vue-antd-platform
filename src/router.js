@@ -28,9 +28,9 @@ export default new Router({
           icon: 'none',
         },
         {
-          path: '/authority/customer',
+          path: '/authority/user',
           name: '用户管理',
-          component: () => import('@/views/authority/customer.vue'),
+          component: () => import('@/views/authority/user.vue'),
           icon: 'none',
         },
       ],

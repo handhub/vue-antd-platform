@@ -16,7 +16,7 @@ const menuList = [
     title: '权限管理',
     children: [
       {
-        path: '/authority/customer',
+        path: '/authority/user',
         name: '用户管理',
       },
       {

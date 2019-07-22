@@ -9,15 +9,13 @@
       theme="dark"
       :openKeys.sync="openKeys"
       :selectedKeys="selectedKeys"
-      @openChange="openChange"
     >
-      <a-sub-menu v-for="(item, index) in data" :key="index+''">
+      <a-sub-menu v-for="(item, index) in data" :key="index">
         <span slot="title">
           <a-icon :type="item.icon" />
           <span>{{item.title}}</span>
         </span>
-        <a-menu-item v-for="sub in item.children"
-        :key="sub.path">
+        <a-menu-item v-for="sub in item.children" :key="sub.path">
           <router-link :to="sub.path">{{sub.name}}</router-link>
         </a-menu-item>
       </a-sub-menu>
@@ -33,47 +31,39 @@ export default {
       type: Array,
       required: true,
     },
+    collapsed: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
       openKeys: [],
-      defaultOpenKeys: [0],
-      selectedKeys: [],
+      selectedKeys: [this.$route.path],
     };
   },
   watch: {
-    openKeys(val) {
-      window.console.log('openKeys', val);
-    },
     $route(val) {
-      this.selectedKeys = [`${val.path}`];
+      this.selectedKeys = [val.path];
+    },
+    data() {
+      this.updateMenu();
+    },
+    collapsed(val) {
+      if (val) {
+        this.openKeys = [];
+      } else {
+        this.updateMenu();
+      }
     },
   },
   methods: {
-    openChange(Keys) {
-      window.console.log(Keys);
+    updateMenu() {
+      const menuIndex = this.data.findIndex(item => item.children.findIndex(sub => sub.path === this.selectedKeys[0]) !== -1);
+      this.openKeys = [menuIndex];
     },
   },
   created() {
-    /* eslint-disable */
-    this.selectedKeys = [`${this.$route.path}`];
-    let selectIndex = [];
-    const getSelectedIndex = (datas, indexs) => {
-      let k = 0,
-        len = Array.isArray(datas) ? datas.length : 0;
-      while (k < len) {
-        let data = datas[k];
-        if (data.path && data.path == this.selectedKeys) {
-          selectIndex = indexs;
-          return;
-        } else {
-          k += 1;
-          getSelectedIndex(data.children, [...indexs, (k - 1).toString()]);
-        }
-      }
-    };
-    getSelectedIndex(this.data, []);
-    this.openKeys = selectIndex;
   },
 };
 </script>

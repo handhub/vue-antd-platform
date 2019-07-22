@@ -5,7 +5,7 @@
       :trigger="null"
       collapsible
       v-model="collapsed">
-        <menu-view :data="menuData"></menu-view>
+        <menu-view :data="menuData" :collapsed="collapsed"></menu-view>
       </a-layout-sider>
       <a-layout style="min-height:100vh;">
         <a-layout-header class="head-view">
@@ -34,40 +34,14 @@ export default {
   data() {
     return {
       collapsed: false,
-      collapsed2: false,
       theme: 'dark',
-      menuData: [
-        {
-          icon: 'dashboard',
-          title: '主页',
-          children: [
-            {
-              path: '/dashboard/workplace',
-              name: '工作台',
-            },
-          ],
-        },
-        {
-          icon: 'user',
-          title: '权限管理',
-          children: [
-            {
-              path: '/authority/customer',
-              name: '用户管理',
-            },
-            {
-              path: '/authority/role',
-              name: '角色管理',
-            },
-          ],
-        },
-      ],
+      menuData: [],
     };
   },
   created() {
-    // this.$axios.get('/menuList', {}).then((res) => {
-    //   this.menuData = res.data;
-    // });
+    this.$axios.get('/menuList', {}).then((res) => {
+      this.menuData = res.data;
+    });
   },
   methods: {
     toggleMenu(val) {
