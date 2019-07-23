@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import {
   Button, Form, Input, Icon, Checkbox, message, Alert, Menu, Layout, AutoComplete, Dropdown, Badge,
-  Tabs, Spin, List, Avatar,
+  Tabs, Spin, List, Avatar, Breadcrumb,
 } from 'ant-design-vue';
 import axios from 'axios';
 import App from './App.vue';
@@ -25,6 +25,7 @@ Vue.use(Tabs);
 Vue.use(Spin);
 Vue.use(List);
 Vue.use(Avatar);
+Vue.use(Breadcrumb);
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$message = message;

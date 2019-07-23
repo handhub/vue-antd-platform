@@ -13,6 +13,7 @@ export default new Router({
     {
       path: '/',
       name: '首页',
+      redirect: '/dashboard/workplace',
       component: () => import('@/layouts/ContentView.vue'),
       children: [
         {

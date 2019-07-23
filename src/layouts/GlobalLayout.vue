@@ -11,7 +11,7 @@
         <a-layout-header class="head-view">
           <head-view @toggle="toggleMenu"></head-view>
         </a-layout-header>
-        <a-layout-content>
+        <a-layout-content class="content-view">
           <slot></slot>
         </a-layout-content>
         <a-layout-footer>
@@ -38,15 +38,15 @@ export default {
       menuData: [],
     };
   },
-  created() {
-    this.$axios.get('/menuList', {}).then((res) => {
-      this.menuData = res.data;
-    });
-  },
   methods: {
     toggleMenu(val) {
       this.collapsed = val;
     },
+  },
+  created() {
+    this.$axios.get('/menuList', {}).then((res) => {
+      this.menuData = res.data;
+    });
   },
 };
 </script>
@@ -62,5 +62,8 @@ export default {
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
   position: relative;
   background: #fff;
+}
+.content-view{
+  padding:24px 24px 0;
 }
 </style>
