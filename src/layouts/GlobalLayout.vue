@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-layout class="lay-out-wrap">
-      <a-layout-sider width="260" breakpoint="lg"
+      <a-layout-sider width="260"
       :trigger="null"
       collapsible
       v-model="collapsed">

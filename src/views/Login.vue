@@ -80,6 +80,7 @@ export default {
             this.logging = false;
             if (res.data.code === 0) {
               this.$message.success('登录成功');
+              this.$router.push('/');
               return;
             }
             this.$message.error('账户名或密码错误');
