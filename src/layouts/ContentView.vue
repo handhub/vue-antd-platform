@@ -1,24 +1,24 @@
 <template>
   <global-layout>
     <a-tabs
-      :active-key="activePage"
+      :active-key="activeKey"
       type="editable-card"
-      @change="changePage"
+      @change="showTab"
       @edit="onEdit"
       :hideAdd="true"
     >
-      <a-tab-pane :id="page.fullPath" :key="page.fullPath" v-for="page in pageList">
-        <span slot="tab" :pagekey="page.fullPath">{{page.name}}</span>
+      <a-tab-pane :key="index + ''" v-for="(item, index) in tabs">
+        <span slot="tab">{{item.title}}</span>
       </a-tab-pane>
     </a-tabs>
-    <div class="breadcrumb wide">
+    <!-- <div class="breadcrumb wide">
       <a-breadcrumb>
         <a-breadcrumb-item :key="item.path" v-for="(item, index) in breadcrumb">
-          <span v-if="index === 0"><a href="#/dashboard/workplace">{{item.name}}</a></span>
-          <span v-else>{{item.name}}</span>
+          <span v-if="index === 0"><a href="/"></a></span>
+          <span v-else>{{item.meta.name}}</span>
         </a-breadcrumb-item>
       </a-breadcrumb>
-    </div>
+    </div> -->
     <transition name="page-toggle">
       <router-view />
     </transition>
@@ -27,33 +27,21 @@
 
 <script>
 import GlobalLayout from './GlobalLayout.vue';
-/* eslint-disable */ 
+
 export default {
   components: { GlobalLayout },
   data() {
     return {
-      activePage: '',
-      pageList: [],
+      activeKey: 0,
+      tabs: [],
       breadcrumb: [],
     };
   },
-  watch: {
-    'activePage'(key) {
-      this.$router.push(key);
-    },
-    '$route'(newRoute, oldRoute) {
-      this.activePage = newRoute.fullPath;
-      const found = this.pageList.find((item) => {
-        return item.fullPath === newRoute.fullPath;
-      });
-      if (!found) {
-        this.pageList.push(newRoute);
-      }
-    },
-  },
   methods: {
-    changePage(key) {
-      this.activePage = key;
+    showTab(key) {
+      const menu = this.tabs[key];
+      this.activeKey = `${key}`;
+      this.$router.push({ path: menu.path, query: { menu: menu.menuIndex, token: menu.token } });
     },
     onEdit(key, action) {
       if (action === 'remove') {
@@ -61,36 +49,30 @@ export default {
       }
     },
     remove(key) {
-      if (this.pageList.length === 1) {
+      if (this.tabs.length === 1) {
         this.$message.warning('这是最后一页，不能再关闭了');
         return;
       }
-      const removeIndex = this.pageList.findIndex((item) => {
-        return item.fullPath === key;
-      });
-      const currentIndex = this.pageList.findIndex((item) => {
-        return item.fullPath === this.activePage;
-      });
-      this.pageList = this.pageList.filter(item => item.fullPath !== key);
-      if (removeIndex < currentIndex || currentIndex === this.pageList.length) {
-        this.activePage = this.pageList[currentIndex -1].fullPath;
+      this.tabs.splice(key, 1);
+      if (key < this.activeKey || this.activeKey - this.tabs.length === 0) {
+        this.showTab(this.activeKey - 1);
       } else {
-        this.activePage = this.pageList[currentIndex].fullPath;
+        this.showTab(this.activeKey);
       }
     },
-    getBreadcrumb() {
-      this.breadcrumb = this.$route.matched;
+    listenMenu() {
+      this.$bus.$on('showMenu', (menu) => {
+        const found = this.tabs.find(item => item.path === menu.path);
+        if (!found) {
+          this.tabs.push(menu);
+        }
+        const index = this.tabs.findIndex(item => item.path === menu.path);
+        this.showTab(index);
+      });
     },
   },
   created() {
-    this.pageList.push(this.$route);
-    this.activePage = this.$route.fullPath;
-  },
-  mounted() {
-    this.getBreadcrumb();
-  },
-  updated() {
-    this.getBreadcrumb();
+    this.listenMenu();
   },
 };
 </script>
@@ -100,4 +82,3 @@ export default {
   margin-bottom:16px;
 }
 </style>
-

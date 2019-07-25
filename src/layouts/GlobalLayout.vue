@@ -42,11 +42,21 @@ export default {
     toggleMenu(val) {
       this.collapsed = val;
     },
+    getMenus() {
+      this.$axios.post('/user/menus', { token: this.$route.query.token }).then((res) => {
+        const { data } = res;
+        data.forEach((item, index) => {
+          item.children.forEach((subItem, subIndex) => {
+            data[index].children[subIndex].menuIndex = index;
+            data[index].children[subIndex].token = this.$route.query.token;
+          });
+        });
+        this.menuData = data;
+      });
+    },
   },
   created() {
-    this.$axios.get('/menuList', {}).then((res) => {
-      this.menuData = res.data;
-    });
+    this.getMenus();
   },
 };
 </script>
@@ -64,6 +74,6 @@ export default {
   background: #fff;
 }
 .content-view{
-  padding:24px 24px 0;
+  padding:14px 14px 0;
 }
 </style>

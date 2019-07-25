@@ -12,17 +12,17 @@ matches.keys().forEach((key) => {
 const routes = [
   {
     path: '/',
-    name: '首页',
-    redirect: '/dashboard/workplace',
+    name: 'home',
     component: () => import('@/layouts/ContentView.vue'),
     children: routesChildren,
   },
   {
     path: '/login',
-    name: '登录',
+    name: 'login',
     component: () => import('@/views/Login.vue'),
   },
 ];
 
 const router = new Router({ routes });
+
 export default router;

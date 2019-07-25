@@ -11,7 +11,7 @@
       <div class="login">
         <a-form :form="form" @submit="onSubmit">
           <a-form-item>
-            <a-input size="large" placeholder="admin"
+            <a-input size="large" placeholder="admin/user"
               v-decorator="[
                 'username',
                 {rules: [{ required: true, message: '请输入账户名', whitespace: true }]}
@@ -21,7 +21,7 @@
             </a-input>
           </a-form-item>
           <a-form-item>
-            <a-input size="large" placeholder="888888" type="password"
+            <a-input size="large" placeholder="admin/user" type="password"
               v-decorator="[
                 'password',
                 {rules: [{ required: true, message: '请输入密码', whitespace: true}]}
@@ -80,7 +80,10 @@ export default {
             this.logging = false;
             if (res.data.code === 0) {
               this.$message.success('登录成功');
-              this.$router.push('/');
+              this.$router.push({
+                name: 'home',
+                query: { token: res.data.token },
+              });
               return;
             }
             this.$message.error('账户名或密码错误');

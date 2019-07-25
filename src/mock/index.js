@@ -1,6 +1,9 @@
 import Mock from 'mockjs';
-import '@/mock/user';
-import '@/mock/menu';
+
+const matches = require.context('./', false, /\.\/((?!index)\w+\.js)/);
+matches.keys().forEach((key) => {
+  matches(key).default();
+});
 
 // 设置全局延时
 Mock.setup({

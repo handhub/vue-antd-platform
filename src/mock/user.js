@@ -3,12 +3,61 @@ import Mock from 'mockjs';
 const login = ({ body }) => {
   const result = {};
   const { name, password } = JSON.parse(body);
-  if (name === 'admin' && password === '888888') {
+  if (name === 'admin' && password === 'admin') {
     result.code = 0;
+    result.token = 'admin';
+  } else if (name === 'user' && password === 'user') {
+    result.code = 0;
+    result.token = 'user';
   } else {
     result.code = -1;
   }
   return result;
 };
 
-Mock.mock('/login', 'post', login);
+const getMenus = ({ body }) => {
+  const { token } = JSON.parse(body);
+  if (token === 'admin') {
+    return [
+      {
+        icon: 'dashboard',
+        title: '主页',
+        children: [
+          {
+            path: '/dashboard/workplace',
+            title: '工作台Admin',
+          },
+        ],
+      },
+      {
+        icon: 'user',
+        title: '权限管理',
+        children: [
+          {
+            path: '/authority/user',
+            title: '用户管理',
+          },
+          {
+            path: '/authority/role',
+            title: '角色管理',
+          },
+        ],
+      },
+    ];
+  }
+  return [{
+    icon: 'dashboard',
+    title: '主页',
+    children: [
+      {
+        path: '/dashboard/workplace',
+        title: '工作台User',
+      },
+    ],
+  }];
+};
+
+export default () => {
+  Mock.mock('/login', 'post', login);
+  Mock.mock('/user/menus', 'post', getMenus);
+};

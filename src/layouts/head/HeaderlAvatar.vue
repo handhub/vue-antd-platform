@@ -15,7 +15,7 @@
       </a-menu-item>
       <a-menu-divider />
       <a-menu-item>
-        <router-link to="/login">
+        <router-link :to="{ name: 'login'}">
           <a-icon type="poweroff" />
           <span>退出登录</span>
         </router-link>

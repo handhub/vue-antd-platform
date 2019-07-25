@@ -15,8 +15,8 @@
           <a-icon :type="item.icon" />
           <span>{{item.title}}</span>
         </span>
-        <a-menu-item v-for="sub in item.children" :key="sub.path">
-          <router-link :to="sub.path">{{sub.name}}</router-link>
+        <a-menu-item v-for="sub in item.children" :key="sub.path" @click="openMenu(sub)">
+          <span>{{sub.title}}</span>
         </a-menu-item>
       </a-sub-menu>
     </a-menu>
@@ -43,24 +43,48 @@ export default {
     };
   },
   watch: {
-    $route(val) {
-      this.selectedKeys = [val.path];
+    $route(to) {
+      this.selectedKeys = [to.path];
+      if (!this.collapsed) {
+        const key = to.query.menu;
+        const found = this.openKeys.find(v => v === key);
+        if (!found) {
+          this.openKeys.push(key);
+        }
+        // 手风琴效果 只打开选中的菜单
+        // this.openKeys = [key];
+      }
     },
-    data() {
-      this.updateMenu();
+    data(val) {
+      if (!this.$route.query.token) {
+        this.$router.replace({ name: 'login' });
+        return;
+      }
+      let menu = val[0].children[0];
+      if (this.$route.path !== '/') {
+        val.every((item) => {
+          menu = item.children.find(sub => sub.path === this.$route.path);
+          return !menu;
+        });
+      }
+      if (menu) {
+        this.openKeys = [menu.menuIndex];
+        this.$bus.$emit('showMenu', menu);
+      } else {
+        this.$router.replace({ name: 'login' });
+      }
     },
     collapsed(val) {
       if (val) {
         this.openKeys = [];
       } else {
-        this.updateMenu();
+        this.openKeys = [parseInt(this.$route.query.menu, 10)];
       }
     },
   },
   methods: {
-    updateMenu() {
-      const menuIndex = this.data.findIndex(item => item.children.findIndex(sub => sub.path === this.selectedKeys[0]) !== -1);
-      this.openKeys = [menuIndex];
+    openMenu(item) {
+      this.$bus.$emit('showMenu', item);
     },
   },
 };
