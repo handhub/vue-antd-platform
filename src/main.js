@@ -6,6 +6,7 @@ import {
 import axios from 'axios';
 import App from './App.vue';
 import router from './router';
+import request from './api/request';
 
 // eslint-disable-next-line
 if (process.env.NODE_ENV !== 'production') require('@/mock');
@@ -30,6 +31,7 @@ Vue.use(Breadcrumb);
 Vue.prototype.$axios = axios;
 Vue.prototype.$message = message;
 Vue.prototype.$bus = new Vue();
+Vue.prototype.$request = request;
 Vue.config.productionTip = false;
 
 new Vue({

@@ -1,16 +1,22 @@
 import Mock from 'mockjs';
+import User from '@/api/const/user';
 
 const login = ({ body }) => {
   const result = {};
   const { name, password } = JSON.parse(body);
   if (name === 'admin' && password === 'admin') {
     result.code = 0;
-    result.token = 'admin';
+    result.data = {
+      token: 'admin',
+    };
   } else if (name === 'user' && password === 'user') {
     result.code = 0;
-    result.token = 'user';
+    result.data = {
+      token: 'user',
+    };
   } else {
     result.code = -1;
+    result.msg = '账号密码错误';
   }
   return result;
 };
@@ -58,6 +64,6 @@ const getMenus = ({ body }) => {
 };
 
 export default () => {
-  Mock.mock('/login', 'post', login);
+  Mock.mock(User.Login, 'post', login);
   Mock.mock('/user/menus', 'post', getMenus);
 };

@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import user from '@/api/const/user';
+
 export default {
   data() {
     return {
@@ -73,20 +75,19 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.logging = true;
-          this.$axios.post('/login', {
+          this.$request.post(user.Login, {
             name: values.username,
             password: values.password,
-          }).then((res) => {
+          }).then((res, s) => {
+            window.console.log(res, s);
             this.logging = false;
-            if (res.data.code === 0) {
-              this.$message.success('登录成功');
-              this.$router.push({
-                name: 'home',
-                query: { token: res.data.token },
-              });
-              return;
-            }
-            this.$message.error('账户名或密码错误');
+            this.$message.success('登录成功');
+            this.$router.push({
+              name: 'home',
+              query: { token: res.token },
+            });
+          }).then(() => {
+            this.logging = false;
           });
         }
       });
