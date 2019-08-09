@@ -5,4 +5,22 @@
 </template>
 
 <script>
+import user from '@/api/const/user';
+
+export default {
+  created() {
+    this.getTest();
+  },
+  methods: {
+    getTest() {
+      const param = {
+        id: 1,
+        value: 'xxx',
+      };
+      this.$request.post(user.Demo, param).then((res) => {
+        window.console.log(res);
+      });
+    },
+  },
+};
 </script>

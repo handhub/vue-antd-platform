@@ -78,8 +78,7 @@ export default {
           this.$request.post(user.Login, {
             name: values.username,
             password: values.password,
-          }).then((res, s) => {
-            window.console.log(res, s);
+          }).then((res) => {
             this.logging = false;
             this.$message.success('登录成功');
             this.$router.push({

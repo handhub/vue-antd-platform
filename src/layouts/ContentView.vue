@@ -11,17 +11,12 @@
         <span slot="tab">{{item.title}}</span>
       </a-tab-pane>
     </a-tabs>
-    <!-- <div class="breadcrumb wide">
-      <a-breadcrumb>
-        <a-breadcrumb-item :key="item.path" v-for="(item, index) in breadcrumb">
-          <span v-if="index === 0"><a href="/"></a></span>
-          <span v-else>{{item.meta.name}}</span>
-        </a-breadcrumb-item>
-      </a-breadcrumb>
-    </div> -->
     <transition name="page-toggle">
       <router-view />
     </transition>
+    <div id="loading">
+      <span class="loading-anim"></span>
+    </div>
   </global-layout>
 </template>
 
@@ -80,5 +75,30 @@ export default {
 <style lang="less" scoped>
 .wide{
   margin-bottom:16px;
+}
+#loading{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position:absolute;
+  top:70px;
+  left:0;
+  right:0;
+  bottom:0;
+  .loading-anim {
+    width:35px;
+    height:35px;
+    border:5px solid rgba(189,189,189 ,0.25);
+    border-left-color: rgba(3,155,229 ,1);
+    border-top-color: rgba(3,155,229 ,1);
+    border-radius: 50%;
+    display: inline-block;
+    animation: rotate 600ms infinite linear;
+  }
+  @keyframes rotate {
+    to {
+      transform: rotate(1turn)
+    }
+  }
 }
 </style>

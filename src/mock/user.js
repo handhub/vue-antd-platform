@@ -62,8 +62,7 @@ const getMenus = ({ body }) => {
     ],
   }];
 };
-
 export default () => {
   Mock.mock(User.Login, 'post', login);
-  Mock.mock('/user/menus', 'post', getMenus);
+  Mock.mock('/api/user/menus', 'post', getMenus);
 };

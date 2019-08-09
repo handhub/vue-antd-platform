@@ -7,7 +7,7 @@
       v-model="collapsed">
         <menu-view :data="menuData" :collapsed="collapsed"></menu-view>
       </a-layout-sider>
-      <a-layout style="min-height:100vh;">
+      <a-layout class="wrap-view">
         <a-layout-header class="head-view">
           <head-view @toggle="toggleMenu"></head-view>
         </a-layout-header>
@@ -43,7 +43,7 @@ export default {
       this.collapsed = val;
     },
     getMenus() {
-      this.$axios.post('/user/menus', { token: this.$route.query.token }).then((res) => {
+      this.$request.post('/user/menus', { token: this.$route.query.token }).then((res) => {
         const { data } = res;
         data.forEach((item, index) => {
           item.children.forEach((subItem, subIndex) => {
@@ -65,6 +65,11 @@ export default {
 .lay-out-wrap{
   flex-direction: row;
 }
+.wrap-view{
+  min-height:100vh;
+  display:flex;
+  flex-direction: column;
+}
 .head-view{
   padding: 0;
   height: 64px;
@@ -74,6 +79,8 @@ export default {
   background: #fff;
 }
 .content-view{
+  position:relative;
+  flex:1;
   padding:14px 14px 0;
 }
 </style>
