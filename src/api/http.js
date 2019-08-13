@@ -2,7 +2,7 @@
 import axios from 'axios';
 import bus from '@/libs/bus';
 import { message } from 'ant-design-vue';
-import { showLoading, hideLoading } from '@/libs/loading'; 
+import { showLoading, hideLoading } from '@/libs/loading';
 
 axios.defaults.baseURL = process.env.VUE_APP_API;
 axios.defaults.timeout = 1000 * 60;
@@ -11,7 +11,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.interceptors.request.use(
   (config) => {
     config.cancelToken = bus.source.token;
-    if (config && !config.loading) {
+    if (!config.headers.loading || config.headers.loading === 'yes') {
       showLoading();
     }
     return config;
@@ -54,6 +54,7 @@ export default {
       axios.post(url, data, config).then((res) => {
         processResult(res, resolve, reject, config);
       }).catch((error) => {
+        window.console.log(error);
         message.error('请检查网络情况');
       });
     });

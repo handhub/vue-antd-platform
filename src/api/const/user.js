@@ -1,4 +1,4 @@
 export default {
-  Login: '/user/login',
-  Demo: '/hello/oracle',
+  Login: 'user/login',
+  Demo: 'hello/oracle',
 };

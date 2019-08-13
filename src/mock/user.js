@@ -1,15 +1,16 @@
 import Mock from 'mockjs';
+import qs from 'qs';
 import User from '@/api/const/user';
 
 const login = ({ body }) => {
   const result = {};
-  const { name, password } = JSON.parse(body);
-  if (name === 'admin' && password === 'admin') {
+  const { username, password } = qs.parse(body);
+  if (username === 'admin' && password === 'admin') {
     result.code = 0;
     result.data = {
       token: 'admin',
     };
-  } else if (name === 'user' && password === 'user') {
+  } else if (username === 'user' && password === 'user') {
     result.code = 0;
     result.data = {
       token: 'user',
@@ -22,9 +23,10 @@ const login = ({ body }) => {
 };
 
 const getMenus = ({ body }) => {
-  const { token } = JSON.parse(body);
+  const { token } = qs.parse(body);
+  let menus;
   if (token === 'admin') {
-    return [
+    menus = [
       {
         icon: 'dashboard',
         title: '主页',
@@ -50,19 +52,24 @@ const getMenus = ({ body }) => {
         ],
       },
     ];
+  } else {
+    menus = [{
+      icon: 'dashboard',
+      title: '主页',
+      children: [
+        {
+          path: '/dashboard/workplace',
+          title: '工作台User',
+        },
+      ],
+    }];
   }
-  return [{
-    icon: 'dashboard',
-    title: '主页',
-    children: [
-      {
-        path: '/dashboard/workplace',
-        title: '工作台User',
-      },
-    ],
-  }];
+  return {
+    code: 0,
+    data: menus,
+  };
 };
 export default () => {
-  Mock.mock(User.Login, 'post', login);
+  Mock.mock(`/api/${User.Login}`, 'post', login);
   Mock.mock('/api/user/menus', 'post', getMenus);
 };

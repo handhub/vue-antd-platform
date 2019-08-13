@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import user from '@/api/const/user';
+import USER from '@/api/const/user';
 
 export default {
   data() {
@@ -75,10 +75,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.logging = true;
-          this.$request.post(user.Login, {
-            name: values.username,
-            password: values.password,
-          }).then((res) => {
+          this.$reqPostNoLoading(USER.Login, values).then((res) => {
             this.logging = false;
             this.$message.success('登录成功');
             this.$router.push({

@@ -3,14 +3,13 @@ import {
   Button, Form, Input, Icon, Checkbox, message, Alert, Menu, Layout, AutoComplete, Dropdown, Badge,
   Tabs, Spin, List, Avatar, Breadcrumb,
 } from 'ant-design-vue';
-import axios from 'axios';
 import App from './App.vue';
 import router from './router';
 import request from './api/request';
 import bus from '@/libs/bus';
 
 // eslint-disable-next-line
-if (process.env.NODE_ENV !== 'production') require('@/mock');
+if (process.env.NODE_ENV === 'development') require('@/mock');
 
 Vue.use(Button);
 Vue.use(Form);
@@ -29,20 +28,10 @@ Vue.use(List);
 Vue.use(Avatar);
 Vue.use(Breadcrumb);
 
-Vue.prototype.$axios = axios;
+Vue.use(request);
 Vue.prototype.$message = message;
 Vue.prototype.$bus = bus;
-Vue.prototype.$request = request;
 Vue.config.productionTip = false;
-
-router.beforeEach((to, from, next) => {
-  // eslint-disable-next-line
-  const CancelToken = axios.CancelToken;
-  // eslint-disable-next-line
-  bus.source.cancel && bus.source.cancel();
-  bus.source = CancelToken.source();
-  next();
-});
 
 new Vue({
   router,

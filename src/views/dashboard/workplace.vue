@@ -17,7 +17,7 @@ export default {
         id: 1,
         value: 'xxx',
       };
-      this.$request.post(user.Demo, param).then((res) => {
+      this.$reqPost(user.Demo, param).then((res) => {
         window.console.log(res);
       });
     },

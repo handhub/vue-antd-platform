@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import axios from 'axios';
+import bus from '@/libs/bus';
 
 Vue.use(Router);
 
@@ -25,4 +27,10 @@ const routes = [
 
 const router = new Router({ routes });
 
+router.beforeEach((to, from, next) => {
+  // eslint-disable-next-line
+  bus.source.cancel && bus.source.cancel();
+  bus.source = axios.CancelToken.source();
+  next();
+});
 export default router;

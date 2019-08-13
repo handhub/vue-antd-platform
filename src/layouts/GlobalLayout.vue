@@ -1,6 +1,8 @@
 <template>
   <div>
-    <a-layout class="lay-out-wrap">
+    <a-spin tip="Loading..."  v-if="loading" style="position: absolute;top: 40%;left: 49%;z-index: 1000;"/>
+    <a-layout class="lay-out-wrap" v-show="!loading">
+    <!-- <a-layout class="lay-out-wrap"> -->
       <a-layout-sider width="260"
       :trigger="null"
       collapsible
@@ -33,6 +35,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       collapsed: false,
       theme: 'dark',
       menuData: [],
@@ -43,19 +46,24 @@ export default {
       this.collapsed = val;
     },
     getMenus() {
-      this.$request.post('/user/menus', { token: this.$route.query.token }).then((res) => {
-        const { data } = res;
+      this.$reqPost('/user/menus', { token: this.$route.query.token }).then((res) => {
+        const data = res;
         data.forEach((item, index) => {
           item.children.forEach((subItem, subIndex) => {
             data[index].children[subIndex].menuIndex = index;
             data[index].children[subIndex].token = this.$route.query.token;
           });
         });
+        this.loading = false;
         this.menuData = data;
       });
     },
   },
   created() {
+    if (!this.$route.query.token) {
+      this.$router.replace({ name: 'login' });
+      return;
+    }
     this.getMenus();
   },
 };
