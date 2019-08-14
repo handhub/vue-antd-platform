@@ -1,6 +1,6 @@
 export default [
   {
     path: '/dashboard/workplace',
-    component: () => import('@/views/dashboard/workplace.vue'),
+    component: () => import(/* webpackChunkName: "index.page" */ '@/views/dashboard/workplace.vue'),
   },
 ];

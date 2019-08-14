@@ -54,7 +54,6 @@ export default {
       axios.post(url, data, config).then((res) => {
         processResult(res, resolve, reject, config);
       }).catch((error) => {
-        window.console.log(error);
         message.error('请检查网络情况');
       });
     });

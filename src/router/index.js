@@ -15,13 +15,13 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/layouts/ContentView.vue'),
+    component: () => import(/* webpackChunkName: "index.page" */ '@/layouts/ContentView.vue'),
     children: routesChildren,
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/Login.vue'),
+    component: () => import(/* webpackChunkName: "index.page" */ '@/views/Login.vue'),
   },
 ];
 
